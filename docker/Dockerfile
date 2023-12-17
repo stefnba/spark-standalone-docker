@@ -35,7 +35,7 @@ RUN mkdir -p ${SPARK_HOME} \
 FROM spark-base as pyspark
 
 # Install Jupyter and other python deps
-COPY requirements.txt .
+COPY conf/requirements.txt .
 RUN pip3 install -r requirements.txt
 
 ENV PATH="/opt/spark/sbin:/opt/spark/bin:${PATH}"
@@ -44,6 +44,8 @@ ENV SPARK_HOME="/opt/spark"
 ENV SPARK_MASTER_HOST spark-master
 ENV SPARK_MASTER_PORT 7077
 ENV PYSPARK_PYTHON python3
+
+ENV JAVA_HOME /usr/lib/jvm/java-11-openjdk-arm64/
 
 COPY conf/spark-defaults.conf "$SPARK_HOME/conf"
 
