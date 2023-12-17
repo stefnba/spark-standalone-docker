@@ -1,0 +1,47 @@
+version: '3.8'
+
+x-spark-common: &spark-common
+    build:
+        context: .
+        dockerfile: docker/Dockerfile
+    environment:
+        - SPARK_NO_DAEMONIZE=true
+    env_file:
+        - .env
+    volumes:
+        - ./notebooks:/opt/spark/apps
+        - spark-logs:/opt/spark/spark-events
+
+services:
+    spark-master:
+        <<: *spark-common
+        container_name: spark-master
+        entrypoint: ['./sbin/start-master.sh']
+        healthcheck:
+            test: ['CMD', 'curl', '-f', 'http://localhost:8080']
+            interval: 5s
+            timeout: 3s
+            retries: 3
+        ports:
+            - '9090:8080' # web ui
+            - '7077:7077' # master
+
+    spark-history:
+        <<: *spark-common
+        container_name: spark-history
+        entrypoint: ['./sbin/start-history-server.sh']
+        depends_on:
+            - spark-master
+        ports:
+            - '18080:18080'
+
+    spark-worker:
+        <<: *spark-common
+        entrypoint: ['./entrypoint.sh', 'worker']
+        depends_on:
+            - spark-master
+        env_file:
+            - .env
+
+volumes:
+    spark-logs:

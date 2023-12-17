@@ -1,0 +1,5 @@
+pandas
+pyarrow
+numpy
+pyspark
+spylon-kernel
