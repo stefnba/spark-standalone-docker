@@ -1,4 +1,4 @@
-FROM python:3.11-bullseye as spark-base
+FROM python:3.11-bullseye as cluster-base
 
 ENV SPARK_VERSION=3.5.0
 ENV SPARK_MAJOR_VERSION=3.5
@@ -31,8 +31,9 @@ RUN mkdir -p ${SPARK_HOME} \
  && tar xvzf spark-${SPARK_VERSION}-bin-hadoop3.tgz --directory /opt/spark --strip-components 1 \
  && rm -rf spark-${SPARK_VERSION}-bin-hadoop3.tgz
 
+ENV JAVA_HOME /usr/lib/jvm/java-11-openjdk-arm64/
 
-FROM spark-base as pyspark
+FROM cluster-base as pyspark
 
 # Install Jupyter and other python deps
 COPY conf/requirements.txt .
@@ -45,7 +46,6 @@ ENV SPARK_MASTER_HOST spark-master
 ENV SPARK_MASTER_PORT 7077
 ENV PYSPARK_PYTHON python3
 
-ENV JAVA_HOME /usr/lib/jvm/java-11-openjdk-arm64/
 
 COPY conf/spark-defaults.conf "$SPARK_HOME/conf"
 
