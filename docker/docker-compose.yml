@@ -4,6 +4,7 @@ x-spark-common: &spark-common
     build:
         context: .
         dockerfile: docker/Dockerfile
+        target: spark
     environment:
         - SPARK_NO_DAEMONIZE=true
     env_file:
@@ -47,7 +48,8 @@ services:
     jupyterlab:
         build:
             context: .
-            dockerfile: docker/jupyterlab.Dockerfile
+            dockerfile: docker/Dockerfile
+            target: jupyterlab
         container_name: jupyterlab
         depends_on:
             - spark-master
