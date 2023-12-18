@@ -15,4 +15,4 @@ sample_data = [
 
 df = spark.createDataFrame(sample_data)
 
-print(df.show())  # type: ignore
+df.show()
