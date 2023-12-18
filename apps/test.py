@@ -16,3 +16,6 @@ sample_data = [
 df = spark.createDataFrame(sample_data)
 
 df.show()
+
+
+spark.stop()
