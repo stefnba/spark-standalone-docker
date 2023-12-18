@@ -43,5 +43,17 @@ services:
         env_file:
             - .env
 
+    jupyterlab:
+        build:
+            context: .
+            dockerfile: docker/jupyterlab.Dockerfile
+        container_name: jupyterlab
+        depends_on:
+            - spark-master
+        ports:
+            - '8889:8888'
+        volumes:
+            - ./notebooks:/notebooks
+
 volumes:
     spark-logs:
