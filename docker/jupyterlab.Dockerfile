@@ -20,7 +20,6 @@ RUN pip3 install pyspark jupyterlab
 
 EXPOSE 8888
 
-RUN mkdir /notebooks
+RUN mkdir /opt/workspace
 
-CMD jupyter lab --ip=0.0.0.0 --port=8888 --no-browser --allow-root --notebook-dir=/notebooks --NotebookApp.token=
-# CMD jupyter lab --ip=0.0.0.0 --port=8888 --no-browser --allow-root --notebook-dir=/notebooks
+CMD jupyter lab --ip=0.0.0.0 --port=8888 --no-browser --allow-root --notebook-dir=/opt/workspace --IdentityProvider.token=

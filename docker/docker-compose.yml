@@ -11,6 +11,7 @@ x-spark-common: &spark-common
     volumes:
         - ./apps:/opt/spark/apps
         - spark-logs:/opt/spark/spark-events
+        - ./workspace:/opt/workspace
 
 services:
     spark-master:
@@ -53,7 +54,7 @@ services:
         ports:
             - '8889:8888'
         volumes:
-            - ./notebooks:/notebooks
+            - ./workspace:/opt/workspace
 
 volumes:
     spark-logs:
