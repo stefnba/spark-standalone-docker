@@ -42,8 +42,6 @@ services:
         entrypoint: ['./entrypoint.sh', 'worker']
         depends_on:
             - spark-master
-        env_file:
-            - .env
 
     jupyterlab:
         build:
@@ -57,6 +55,8 @@ services:
             - '8889:8888'
         volumes:
             - ./workspace:/opt/workspace
+        env_file:
+            - .env
 
 volumes:
     spark-logs:
