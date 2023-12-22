@@ -27,6 +27,7 @@ services:
         ports:
             - '9090:8080' # web ui
             - '7077:7077' # master
+            - '8888:8888' # notebook server
 
     spark-history:
         <<: *spark-common
@@ -42,21 +43,6 @@ services:
         entrypoint: ['./entrypoint.sh', 'worker']
         depends_on:
             - spark-master
-
-    jupyterlab:
-        build:
-            context: .
-            dockerfile: docker/Dockerfile
-            target: jupyterlab
-        container_name: jupyterlab
-        depends_on:
-            - spark-master
-        ports:
-            - '8889:8888'
-        volumes:
-            - ./workspace:/opt/workspace
-        env_file:
-            - .env
 
 volumes:
     spark-logs:
