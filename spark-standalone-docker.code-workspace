@@ -18,6 +18,7 @@
             },
             "editor.defaultFormatter": "ms-python.black-formatter"
         },
+        "editor.formatOnSave": true,
         "ruff.path": ["./.venv/bin/ruff"],
         "python.envFile": "${workspaceFolder}/.env",
         "python.defaultInterpreterPath": "./.venv/bin/python",
@@ -36,6 +37,6 @@
             "**/__pycache__": true,
             ".mypy_cache": true,
             ".ruff_cache": true
-        },
+        }
     }
 }
