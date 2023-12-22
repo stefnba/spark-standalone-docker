@@ -1,5 +1,7 @@
 jupyter==1.0.0
-pyiceberg[glue]==0.5.1
+pyiceberg[glue,s3fs]==0.5.1
 jupysql==0.10.5
 pandas
 pyarrow
+polars
+duckdb
