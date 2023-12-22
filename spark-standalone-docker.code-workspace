@@ -9,6 +9,18 @@
         "python.languageServer": "Pylance",
         "notebook.formatOnSave.enabled": true,
         "editor.defaultFormatter": "esbenp.prettier-vscode",
+        "[markdown]": {
+            "editor.unicodeHighlight.ambiguousCharacters": false,
+            "editor.unicodeHighlight.invisibleCharacters": false,
+            "diffEditor.ignoreTrimWhitespace": false,
+            "editor.wordWrap": "on",
+            "editor.quickSuggestions": {
+                "comments": "off",
+                "strings": "off",
+                "other": "off"
+            },
+            "editor.formatOnSave": false
+        },
         "[python]": {
             "editor.formatOnSave": true,
             "editor.codeActionsOnSave": {
