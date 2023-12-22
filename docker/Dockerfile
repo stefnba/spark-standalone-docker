@@ -41,11 +41,18 @@ RUN curl https://dlcdn.apache.org/spark/spark-${SPARK_VERSION}/spark-${SPARK_VER
  && rm -rf spark-${SPARK_VERSION}-bin-hadoop3.tgz
 
 
-# Download
-# RUN curl https://repo1.maven.org/maven2/com/azure/azure-storage-blob/12.25.1/azure-storage-blob-12.25.1.jar -Lo /opt/spark/jars/iceberg-spark-runtime-${SPARK_MAJOR_VERSION}_2.12-${ICEBERG_VERSION}.jar
+# Install PostgreSQL JDBC Driver
+RUN curl "https://jdbc.postgresql.org/download/postgresql-42.6.0.jar" -o "postgresql-42.6.0.jar" \
+    && mv postgresql-42.6.0.jar "${SPARK_HOME}/jars/postgresql-42.6.0.jar"
 
 
+ENV ICEBERG_VERSION=1.4.2
 
+# Download iceberg spark runtime
+RUN curl "https://repo1.maven.org/maven2/org/apache/iceberg/iceberg-spark-runtime-${SPARK_MAJOR_VERSION}_2.12/${ICEBERG_VERSION}/iceberg-spark-runtime-${SPARK_MAJOR_VERSION}_2.12-${ICEBERG_VERSION}.jar" -Lo "/opt/spark/jars/iceberg-spark-runtime-${SPARK_MAJOR_VERSION}_2.12-${ICEBERG_VERSION}.jar"
+
+# Download AWS bundle
+RUN curl -s "https://repo1.maven.org/maven2/org/apache/iceberg/iceberg-aws-bundle/${ICEBERG_VERSION}/iceberg-aws-bundle-${ICEBERG_VERSION}.jar" -Lo "/opt/spark/jars/iceberg-aws-bundle-${ICEBERG_VERSION}.jar"
 
 
 # Install Jupyter and other python deps
@@ -63,26 +70,10 @@ COPY conf/spark-defaults.conf "$SPARK_HOME/conf"
 RUN chmod u+x /opt/spark/sbin/* && \
     chmod u+x /opt/spark/bin/*
 
+RUN mkdir -p /root/.ipython/profile_default/startup
+COPY conf/ipython/startup/00-prettytables.py /root/.ipython/profile_default/startup
+COPY conf/ipython/startup/README /root/.ipython/profile_default/startup
+
 COPY ./scripts/entrypoint.sh .
 ENTRYPOINT ["./entrypoint.sh"]
-
-FROM cluster-base as jupyterlab
-
-RUN pip3 install jupyterlab
-
-EXPOSE 8888
-
-CMD jupyter lab \
-    --ip=0.0.0.0 \
-    --port=8888 \
-    --no-browser \
-    --allow-root \
-    --notebook-dir=${WORKSPACE} \
-    --IdentityProvider.token="hallo" \
-    --IdentityProvider.password="hallo" \
-    --ServerApp.allow_origin="*" \
-    --ServerApp.ip="0.0.0.0"
-
-
-
 
