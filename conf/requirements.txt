@@ -1,4 +1,5 @@
+jupyter==1.0.0
+pyiceberg[glue]==0.5.1
+jupysql==0.10.5
 pandas
 pyarrow
-numpy
-spylon-kernel
